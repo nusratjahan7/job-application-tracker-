@@ -21,3 +21,13 @@ deleteButtons.forEach(function(button){
         button.parentElement.parentElement.remove();
     })
 })
+
+// calculate card 
+function calculateCount(){
+    total.innerText = allCardSection.children.length;
+    interviewCount.innerText = interview.length;
+    rejectedCount.innerText = rejected.length;
+}
+calculateCount();
+
+
