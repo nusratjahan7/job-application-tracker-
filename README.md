@@ -21,9 +21,13 @@ insert the element into the DOM using appendChild()
 
 - Example:
   const container = document.getElementbyId("container");
+  
   const newDiv = document.createElement("div");
+  
   div.classList.add("w-11/12", "mx-auto");
+  
   div.innerHtml = `<h2>Hello World</h2>`;
+  
   container.appendChild(newDiv);
 ### 3. Answer:
 - Event Bubbling is when an event triggered on a child element automatically propagetes up to its parent element in the DOM, unless stoped.
