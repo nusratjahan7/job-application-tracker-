@@ -19,10 +19,13 @@ const noJobSection = document.getElementById('no-job');
 
 
 function checkEmpty(){
-    if(allCardSection.children.length === 0){
+    if(currentStatus === 'all' && allCardSection.children.length === 0){
         noJobSection.classList.remove('hidden');
     }
-    else if (filterSection.children.length === 0){
+    else if (currentStatus === 'interview-filter-btn' && interview.length === 0){
+        noJobSection.classList.remove('hidden');
+    }
+     else if(currentStatus === 'rejected-filter-btn' && rejected.length === 0){
         noJobSection.classList.remove('hidden');
     }
     else {
@@ -50,10 +53,10 @@ mainContainer.addEventListener('click', function(event){
     rejected = rejected.filter(item => item.jobName !== jobName);
 
     card.remove();
-    
+
     calculateCount();
     checkEmpty();
-    
+
     if(currentStatus === 'interview-filter-btn'){
         renderInterview();
     }
@@ -69,7 +72,8 @@ function calculateCount(){
     total.innerText = allCardSection.children.length;
     interviewCount.innerText = interview.length;
     rejectedCount.innerText = rejected.length;
-    if(currentStatus === 'all-filter-btn'){
+
+    if(currentStatus === 'all'){
         jobCount.innerText = allCardSection.children.length;
     }
      else if(currentStatus === 'interview-filter-btn'){
@@ -103,20 +107,23 @@ function toggleStyle(id){
         filterSection.classList.remove('hidden');
         jobCount.innerText = interview.length;
         renderInterview();   
-        checkEmpty();
+       
     }
     else if (id === "all-filter-btn"){
         allCardSection.classList.remove("hidden");
         filterSection.classList.add("hidden");
-        jobCount.innerText = allCardSection.children.length;        
+        jobCount.innerText = allCardSection.children.length;
+        
     }
     else if (id === "rejected-filter-btn"){
         allCardSection.classList.add('hidden');
         filterSection.classList.remove('hidden');
         jobCount.innerText = rejected.length;
         renderRejected();
-        checkEmpty();
+        
     }
+    calculateCount();
+    checkEmpty();
 }
 
 mainContainer.addEventListener('click', function(event){
@@ -177,8 +184,6 @@ mainContainer.addEventListener('click', function(event){
         calculateCount();
     }
 })
-
-
 
 
 function renderInterview(){
