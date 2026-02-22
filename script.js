@@ -15,15 +15,14 @@ const mainContainer = document.querySelector('main');
 const filterSection = document.getElementById('filtered-section');
 
 const jobCount = document.getElementById('job-count');
-jobCount.innerText = allCardSection.children.length;
+
 
 //  delete card
 const deleteButtons = document.querySelectorAll('.delete-btn');
 deleteButtons.forEach(function(button){
     button.addEventListener('click', function(){
         button.parentElement.parentElement.remove();
-        
-        jobCount.innerText = allCardSection.children.length;
+        calculateCount();
     })
 })
 
@@ -31,6 +30,7 @@ deleteButtons.forEach(function(button){
 // calculate card 
 function calculateCount(){
     total.innerText = allCardSection.children.length;
+    jobCount.innerText = allCardSection.children.length;
     interviewCount.innerText = interview.length;
     rejectedCount.innerText = rejected.length;
 }
@@ -67,4 +67,85 @@ function toggleStyle(id){
     }
 }
 
+mainContainer.addEventListener('click', function(event){
+    if(event.target.classList.contains('.interview-btn')){
+        const parentNode = event.target.parentNode.parentNode;
+        const jobName = parentNode.querySelector('.jobName').innerText;
+        const jobTitle = parentNode.querySelector('.jobTitle').innerText;
+        const jobType = parentNode.querySelector('.jobType').innerText;
+        const jobStatus = parentNode.querySelector('.job-status').innerText;
+        const jobText = parentNode.querySelector('.job-text').innerText;
+        parentNode.querySelector('.job-status').innerText = Interview;
+
+        const cardInfo = {
+            jobName,
+            jobTitle,
+            jobType,
+            jobStatus: 'Interview',
+            jobText
+        }
+        const jobExist = interview.find(item => item.jobName === cardInfo.jobName);
+
+        if(!jobExist){
+            interview.push(cardInfo);
+        }
+        rejected = rejected.filter(item => item.jobName === cardInfo.jobName);
+        if(currentStatus === 'rejected-filter-btn'){
+            renderRejected();
+        }
+        calculateCount();
+    }
+    
+})
+
+
+
+
+function renderInterview(){
+    filterSection.innerHTML = ' ';
+    for(let inter of interview){
+        let div = document.createElement('div');
+        div.className = "bg-white p-4 rounded-lg flex justify-between";
+        div.innerHTML = `
+        <div>
+                 <h3 class="jobName text-[#002C5C] text-xl font-semibold">Mobile First Corp</h3>
+                <p class="jobTitle text-[#64748B]">${interview.jobName}</p>
+                <p class="jobType text-[#64748B] my-5">${interview.jobTitle}</p>
+                <p class="job-status bg-[#EEF4FF] text-[#002C5C] w-36 p-2 text-center font-semibold my-5">${interview.jobStatus}</p>
+                <p class="job-text text-[#323B49]">${interview.jobText}</p>
+                <div class="my-4 flex gap-3">
+                    <button class="interview-btn btn btn-outline btn-success">Interview</button>
+                    <button class="rejected-btn btn btn-outline btn-error">Rejected</button>
+                </div>
+                </div>
+                <div class="mt-4">
+                    <button class="delete-btn px-2 py-2 rounded-full text-[#323B49] border border-[#323b4915]"><i class="fa-regular fa-trash-can"></i></button>
+                </div>
+        `
+    }
+}
+
+function renderRejected(){
+    filterSection.innerHTML = ' ';
+    for(let reject of rejected){
+        let div = document.createElement('div');
+        div.className = "bg-white p-4 rounded-lg flex justify-between";
+        div.innerHTML = `
+        <div>
+                 <h3 class="jobName text-[#002C5C] text-xl font-semibold">Mobile First Corp</h3>
+                <p class="jobTitle text-[#64748B]">${rejected.jobName}</p>
+                <p class="jobType text-[#64748B] my-5">${rejected.jobTitle}</p>
+                <p class="job-status bg-[#EEF4FF] text-[#002C5C] w-36 p-2 text-center font-semibold my-5">${rejected.jobStatus}</p>
+                <p class="job-text text-[#323B49]">${rejected.jobText}</p>
+                <div class="my-4 flex gap-3">
+                    <button class="interview-btn btn btn-outline btn-success">Interview</button>
+                    <button class="rejected-btn btn btn-outline btn-error">Rejected</button>
+                </div>
+                </div>
+                <div class="mt-4">
+                    <button class="delete-btn px-2 py-2 rounded-full text-[#323B49] border border-[#323b4915]"><i class="fa-regular fa-trash-can"></i></button>
+                </div>
+        `
+    }
+}
 
