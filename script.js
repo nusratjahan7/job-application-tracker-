@@ -22,6 +22,9 @@ function checkEmpty(){
     if(allCardSection.children.length === 0){
         noJobSection.classList.remove('hidden');
     }
+    else if (filterSection.children.length === 0){
+        noJobSection.classList.remove('hidden');
+    }
     else {
         noJobSection.classList.add("hidden");
     }
@@ -70,26 +73,29 @@ function toggleStyle(id){
         filterSection.classList.remove('hidden');
         jobCount.innerText = interview.length;
         renderInterview();   
+        checkEmpty();
     }
     else if (id === "all-filter-btn"){
         allCardSection.classList.remove("hidden");
         filterSection.classList.add("hidden");
         jobCount.innerText = allCardSection.children.length;
+        checkEmpty();
     }
     else if (id === "rejected-filter-btn"){
         allCardSection.classList.add('hidden');
         filterSection.classList.remove('hidden');
         jobCount.innerText = rejected.length;
         renderRejected();
+        checkEmpty();
     }
 }
 
 mainContainer.addEventListener('click', function(event){
-    if(event.target.classList.contains('.interview-btn')){
+    if(event.target.classList.contains('interview-btn')){
         const parentNode = event.target.parentNode.parentNode;
         const jobName = parentNode.querySelector('.jobName').innerText;
         const jobTitle = parentNode.querySelector('.jobTitle').innerText;
-        const jobType = parentNode.querySelector('.jobType').innerText;
+        const jobType = parentNode.querySelector('.job-type').innerText;
         const jobStatus = parentNode.querySelector('.job-status').innerText;
         const jobText = parentNode.querySelector('.job-text').innerText;
         parentNode.querySelector('.job-status').innerText = 'Interview';
@@ -112,7 +118,7 @@ mainContainer.addEventListener('click', function(event){
         }
         calculateCount();
     }
-    else if(event.target.classList.contains('.rejected-btn')){
+    else if(event.target.classList.contains('rejected-btn')){
         const parentNode = event.target.parentNode.parentNode;
         const jobName = parentNode.querySelector('.jobName').innerText;
         const jobTitle = parentNode.querySelector('.jobTitle').innerText;
@@ -152,10 +158,10 @@ function renderInterview(){
         div.innerHTML = `
         <div>
                  <h3 class="jobName text-[#002C5C] text-xl font-semibold">Mobile First Corp</h3>
-                <p class="jobTitle text-[#64748B]">${interview.jobName}</p>
-                <p class="jobType text-[#64748B] my-5">${interview.jobTitle}</p>
-                <p class="job-status bg-[#EEF4FF] text-[#002C5C] w-36 p-2 text-center font-semibold my-5">${interview.jobStatus}</p>
-                <p class="job-text text-[#323B49]">${interview.jobText}</p>
+                <p class="jobTitle text-[#64748B]">${inter.jobName}</p>
+                <p class="jobType text-[#64748B] my-5">${inter.jobTitle}</p>
+                <p class="job-status bg-[#EEF4FF] text-[#002C5C] w-36 p-2 text-center font-semibold my-5">${inter.jobStatus}</p>
+                <p class="job-text text-[#323B49]">${inter.jobText}</p>
                 <div class="my-4 flex gap-3">
                     <button class="interview-btn btn btn-outline btn-success">Interview</button>
                     <button class="rejected-btn btn btn-outline btn-error">Rejected</button>
@@ -165,6 +171,7 @@ function renderInterview(){
                     <button class="delete-btn px-2 py-2 rounded-full text-[#323B49] border border-[#323b4915]"><i class="fa-regular fa-trash-can"></i></button>
                 </div>
         `
+        filterSection.appendChild(div);
     }
 }
 
@@ -176,10 +183,10 @@ function renderRejected(){
         div.innerHTML = `
         <div>
                  <h3 class="jobName text-[#002C5C] text-xl font-semibold">Mobile First Corp</h3>
-                <p class="jobTitle text-[#64748B]">${rejected.jobName}</p>
-                <p class="jobType text-[#64748B] my-5">${rejected.jobTitle}</p>
-                <p class="job-status bg-[#EEF4FF] text-[#002C5C] w-36 p-2 text-center font-semibold my-5">${rejected.jobStatus}</p>
-                <p class="job-text text-[#323B49]">${rejected.jobText}</p>
+                <p class="jobTitle text-[#64748B]">${reject.jobName}</p>
+                <p class="jobType text-[#64748B] my-5">${reject.jobTitle}</p>
+                <p class="job-status bg-[#EEF4FF] text-[#002C5C] w-36 p-2 text-center font-semibold my-5">${reject.jobStatus}</p>
+                <p class="job-text text-[#323B49]">${reject.jobText}</p>
                 <div class="my-4 flex gap-3">
                     <button class="interview-btn btn btn-outline btn-success">Interview</button>
                     <button class="rejected-btn btn btn-outline btn-error">Rejected</button>
@@ -189,6 +196,7 @@ function renderRejected(){
                     <button class="delete-btn px-2 py-2 rounded-full text-[#323B49] border border-[#323b4915]"><i class="fa-regular fa-trash-can"></i></button>
                 </div>
         `
+        filterSection.appendChild(div);
     }
 }
 
