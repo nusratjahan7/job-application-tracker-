@@ -32,22 +32,52 @@ function checkEmpty(){
 
 
 //  delete card
-const deleteButtons = document.querySelectorAll('.delete-btn');
-deleteButtons.forEach(function(button){
-    button.addEventListener('click', function(){
-        button.parentElement.parentElement.remove();
-        calculateCount();
-        checkEmpty();
-    })
-})
+// const deleteButtons = document.querySelectorAll('.delete-btn');
+// deleteButtons.forEach(function(button){
+//     button.addEventListener('click', function(){
+//         button.parentElement.parentElement.remove();
+//         calculateCount();     
+//     })
+// });
+mainContainer.addEventListener('click', function(event){
+  if(event.target.closest('.delete-btn')){
+   
+    const card = event.target.closest('.bg-white');
+    const jobName = card.querySelector('.jobName').innerText;
+   
+    interview = interview.filter(item => item.jobName !== jobName);
+  
+    rejected = rejected.filter(item => item.jobName !== jobName);
+
+    card.remove();
+    
+    calculateCount();
+    checkEmpty();
+    
+    if(currentStatus === 'interview-filter-btn'){
+        renderInterview();
+    }
+    else if(currentStatus === 'rejected-filter-btn'){
+        renderRejected();
+    }
+}
+});
 
 
 // calculate card 
 function calculateCount(){
     total.innerText = allCardSection.children.length;
-    jobCount.innerText = allCardSection.children.length;
     interviewCount.innerText = interview.length;
     rejectedCount.innerText = rejected.length;
+    if(currentStatus === 'all-filter-btn'){
+        jobCount.innerText = allCardSection.children.length;
+    }
+     else if(currentStatus === 'interview-filter-btn'){
+        jobCount.innerText = interview.length;
+    }
+    else if(currentStatus === 'rejected-filter-btn'){
+        jobCount.innerText = rejected.length;
+    }
 }
 calculateCount();
 
@@ -78,8 +108,7 @@ function toggleStyle(id){
     else if (id === "all-filter-btn"){
         allCardSection.classList.remove("hidden");
         filterSection.classList.add("hidden");
-        jobCount.innerText = allCardSection.children.length;
-        checkEmpty();
+        jobCount.innerText = allCardSection.children.length;        
     }
     else if (id === "rejected-filter-btn"){
         allCardSection.classList.add('hidden');
@@ -113,8 +142,9 @@ mainContainer.addEventListener('click', function(event){
             interview.push(cardInfo);
         }
         rejected = rejected.filter(item => item.jobName !== cardInfo.jobName);
-        if(currentStatus === 'rejected-filter-btn'){
-            renderRejected();
+        
+        if(currentStatus === 'interview-filter-btn'){
+            renderInterview();
         }
         calculateCount();
     }
@@ -140,8 +170,9 @@ mainContainer.addEventListener('click', function(event){
             rejected.push(cardInfo);
         }
        interview = interview.filter(item => item.jobName !== cardInfo.jobName);
-        if(currentStatus === 'interview-filter-btn'){
-            renderInterview();
+        
+       if(currentStatus === 'rejected-filter-btn'){
+            renderRejected();
         }
         calculateCount();
     }
@@ -157,9 +188,9 @@ function renderInterview(){
         div.className = "bg-white p-4 rounded-lg flex justify-between";
         div.innerHTML = `
         <div>
-                 <h3 class="jobName text-[#002C5C] text-xl font-semibold">Mobile First Corp</h3>
-                <p class="jobTitle text-[#64748B]">${inter.jobName}</p>
-                <p class="jobType text-[#64748B] my-5">${inter.jobTitle}</p>
+                 <h3 class="jobName text-[#002C5C] text-xl font-semibold">${inter.jobName}</h3>
+                <p class="jobTitle text-[#64748B]">${inter.jobTitle}</p>
+                <p class="job-type text-[#64748B] my-5">${inter.jobType}</p>
                 <p class="job-status bg-[#EEF4FF] text-[#002C5C] w-36 p-2 text-center font-semibold my-5">${inter.jobStatus}</p>
                 <p class="job-text text-[#323B49]">${inter.jobText}</p>
                 <div class="my-4 flex gap-3">
@@ -182,9 +213,9 @@ function renderRejected(){
         div.className = "bg-white p-4 rounded-lg flex justify-between";
         div.innerHTML = `
         <div>
-                 <h3 class="jobName text-[#002C5C] text-xl font-semibold">Mobile First Corp</h3>
-                <p class="jobTitle text-[#64748B]">${reject.jobName}</p>
-                <p class="jobType text-[#64748B] my-5">${reject.jobTitle}</p>
+                 <h3 class="jobName text-[#002C5C] text-xl font-semibold">${reject.jobName}</h3>
+                <p class="jobTitle text-[#64748B]">${reject.jobTitle}</p>
+                <p class="job-type text-[#64748B] my-5">${reject.jobType}</p>
                 <p class="job-status bg-[#EEF4FF] text-[#002C5C] w-36 p-2 text-center font-semibold my-5">${reject.jobStatus}</p>
                 <p class="job-text text-[#323B49]">${reject.jobText}</p>
                 <div class="my-4 flex gap-3">
