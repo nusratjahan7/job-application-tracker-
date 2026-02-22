@@ -112,7 +112,7 @@ mainContainer.addEventListener('click', function(event){
         if(!jobExist){
             interview.push(cardInfo);
         }
-        rejected = rejected.filter(item => item.jobName === cardInfo.jobName);
+        rejected = rejected.filter(item => item.jobName !== cardInfo.jobName);
         if(currentStatus === 'rejected-filter-btn'){
             renderRejected();
         }
@@ -122,7 +122,7 @@ mainContainer.addEventListener('click', function(event){
         const parentNode = event.target.parentNode.parentNode;
         const jobName = parentNode.querySelector('.jobName').innerText;
         const jobTitle = parentNode.querySelector('.jobTitle').innerText;
-        const jobType = parentNode.querySelector('.jobType').innerText;
+        const jobType = parentNode.querySelector('.job-type').innerText;
         const jobStatus = parentNode.querySelector('.job-status').innerText;
         const jobText = parentNode.querySelector('.job-text').innerText;
         parentNode.querySelector('.job-status').innerText = 'Rejected';
@@ -139,7 +139,7 @@ mainContainer.addEventListener('click', function(event){
         if(!jobExist){
             rejected.push(cardInfo);
         }
-       interview = interview.filter(item => item.jobName === cardInfo.jobName);
+       interview = interview.filter(item => item.jobName !== cardInfo.jobName);
         if(currentStatus === 'interview-filter-btn'){
             renderInterview();
         }
